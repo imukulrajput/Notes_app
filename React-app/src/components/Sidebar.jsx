@@ -23,7 +23,7 @@ export default function Sidebar() {
       </NavLink>
       <NavLink className={getStyles} to="/bin">
         <span className="material-icons-outlined">delete</span>
-        <span>Delete</span>
+        <span>Bin</span>
       </NavLink>
     </aside>
   );

@@ -5,18 +5,19 @@ import { useNotes } from "../Context/notes-context.jsx";
 import NotesCard from "../components/NotesCard.jsx";
 import Footer from "../components/Footer.jsx";
 
-export default function Archive() {
-  const { archive } = useNotes();
+export default function Bin(){
 
-  return (
-    <Fragment>
-      <Navbar></Navbar>
-      <main className="flex gap-3">
-        <Sidebar />
-            <div>
+    const { deleted } = useNotes();
+
+    return (
+        <Fragment>
+            <Navbar></Navbar>
+            <main className="flex gap-3">
+               <Sidebar/>
+               <div>
         <div className="flex flex-wrap gap-6 w-screen mt-7">
-          {archive?.length > 0 &&
-            archive.map(({ id, title, text, isPinned }) => (
+          {deleted?.length > 0 &&
+            deleted.map(({ id, title, text, isPinned }) => (
               <NotesCard
                 key={id}
                 id={id}
@@ -28,7 +29,7 @@ export default function Archive() {
         </div>
         </div>
         <Footer></Footer>
-      </main>
-    </Fragment>
-  );
+            </main>
+        </Fragment>
+    );
 }

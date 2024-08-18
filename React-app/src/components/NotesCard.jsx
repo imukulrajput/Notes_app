@@ -1,12 +1,15 @@
 import { useNotes } from "../Context/notes-context.jsx";
-import { findNotesInArchive } from "../utils/findNotesInArchive.jsx";
+import { findNotesInArchive, findNotesInDeleted } from "../utils/findNotesInArchive.jsx";
 
 
 export default function NotesCard({ id, title, text,isPinned}) {
 
-const {notesDispatch,archive } = useNotes();
+const {notesDispatch,archive,deleted,important } = useNotes();
 
 const isNotesInArchive = findNotesInArchive(archive,id);
+   
+const isNotesInBin = findNotesInDeleted(deleted,id);
+
 
   const onPinClick = (id) =>{
      !isPinned ? notesDispatch({
@@ -29,6 +32,17 @@ const isNotesInArchive = findNotesInArchive(archive,id);
       })
  }
 
+ const onDeleteClick = (id) =>{
+        !isNotesInBin ?
+        notesDispatch({
+          type:'DELETED',
+          payload: {id},
+        }): notesDispatch({
+          type: 'PERMANENT_DELETED',
+          payload: {id}
+        })
+ }
+
 
 
   return (
@@ -36,22 +50,28 @@ const isNotesInArchive = findNotesInArchive(archive,id);
       <div className="flex justify-between border-b-2">
         <p>{title}</p>
         {
-           !isNotesInArchive ?  <button onClick={()=>onPinClick(id)}>
+           !isNotesInArchive && !isNotesInBin?  <button onClick={()=>onPinClick(id)}>
            <span className={isPinned? 'material-icons' : 'material-icons-outlined'}>push_pin</span>
-         </button> : <></>
+         </button> : <></> 
         }
        
       </div>
       <div className="flex flex-col">
         <p>{text}</p>
         <div className="ml-auto">
-          <button onClick={()=> onArchiveClick(id)}>
-            <span className={isNotesInArchive?'material-icons' :'material-icons-outlined'}>archive</span>
-          </button>
-          <button>
-            <span className="material-icons-outlined">delete_outline</span>
-          </button>
-        </div>
+          {
+             !isNotesInBin ? <button onClick={()=> onArchiveClick(id)}>
+             <span className={isNotesInArchive?'material-icons' :'material-icons-outlined'}>archive</span>
+           </button> : <></>
+          }
+           {
+             !isNotesInArchive?  <button onClick={()=> onDeleteClick(id)}>
+             <span className="material-icons-outlined">delete_outline</span>
+           </button> : <></>
+           }
+          
+         
+            </div>
       </div>
     </div>
   );
