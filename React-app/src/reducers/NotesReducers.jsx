@@ -57,6 +57,21 @@ export const NotesReducers = (state, { type, payload }) => {
         archive: state.archive.filter(({ id }) => id !== payload.id),
         
       };
+    
+    case "DELETED":
+      return {
+         ...state,
+        deleted: [...state.deleted,state.notes.find(({id})=>id === payload.id)],
+        notes: state.notes.filter(({ id }) => id !== payload.id)
+      }  
+    
+    case "PERMANENT_DELETED":
+        return {
+           ...state,
+          deleted: state.deleted.filter(({id})=>id!==payload.id),
+          
+       }
+       
 
     default:
       return state;

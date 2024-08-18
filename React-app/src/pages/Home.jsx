@@ -3,9 +3,10 @@ import { Fragment, useState } from "react";
 import Sidebar from "../components/Sidebar.jsx";
 import NotesCard from "../components/NotesCard.jsx";
 import { useNotes } from "../Context/notes-context.jsx";
+import Footer from "../components/Footer.jsx";
 
 export default function Home() {
-  const { title, text, notes,archive ,notesDispatch } = useNotes();
+  const { title, text, notes,notesDispatch } = useNotes();
 
   const onTitleChange = (e) => {
     notesDispatch({
@@ -98,6 +99,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <Footer></Footer>
       </main>
     </Fragment>
   );
